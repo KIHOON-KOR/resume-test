@@ -1,23 +1,25 @@
 body {
-  background-color: #f0f8ff;
+  background-color: #f4fff7; /* 밝은 그린 톤 배경 */
   font-family: "Segoe UI", sans-serif;
   display: flex;
   min-height: 100vh;
 }
 
+/* --- 사이드바 --- */
 .sidebar {
   width: 250px;
-  background: #00acc1;
+  background: #2e7d32; /* 메인 초록색 */
   color: white;
   padding: 30px 20px;
   text-align: center;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .sidebar img {
   width: 170px;
   height: 170px;
   border-radius: 50%;
-  border: 5px solid #fff;
+  border: 5px solid #c8e6c9;
   margin-bottom: 20px;
   object-fit: cover;
 }
@@ -30,43 +32,43 @@ body {
 .sidebar h2 {
   margin-bottom: 20px;
   font-weight: bold;
+  color: #e8f5e9;
 }
 
+/* --- 네비게이션 링크 --- */
 .nav-link {
   color: #e8f5e9 !important;
   margin: 5px 0;
   transition: all 0.3s ease;
+  border-radius: 8px;
+  padding: 8px 0;
 }
 
 .nav-link:hover {
-  background-color: #00838f;
+  background-color: #43a047; /* 밝은 초록색 */
   color: #ffffff !important;
-  border-radius: 8px;
   padding-left: 10px;
 }
 
 .nav-link:active {
   transform: scale(0.97);
-  background-color: #006064;
+  background-color: #1b5e20;
 }
 
+/* --- 본문 --- */
 .content {
   flex: 1;
   padding: 40px;
 }
 
+/* --- 히어로 영역 --- */
 .hero {
-  background: linear-gradient(135deg, #81d4fa, #aed581);
+  background: linear-gradient(135deg, #66bb6a, #a5d6a7);
   color: white;
   padding: 60px 20px;
   text-align: center;
   border-radius: 12px;
-}
-
-.roles {
-  font-size: 1.2rem;
-  color: #eee;
-  text-align: center;
+  box-shadow: 0 5px 15px rgba(102, 187, 106, 0.3);
 }
 
 .hero h1 {
@@ -74,10 +76,31 @@ body {
   font-weight: bold;
 }
 
+.roles {
+  font-size: 1.2rem;
+  color: #f1f8e9;
+  text-align: center;
+}
+
+/* --- 카드 이미지 --- */
 .card-img-top {
   width: 100%;
   height: 300px;
   object-fit: cover;
   border-top-left-radius: 0.5rem;
   border-top-right-radius: 0.5rem;
+}
+
+/* --- 버튼이나 기타 요소 통일 --- */
+button,
+a.btn {
+  background-color: #43a047;
+  color: white;
+  border: none;
+  transition: background-color 0.3s ease;
+}
+
+button:hover,
+a.btn:hover {
+  background-color: #2e7d32;
 }
