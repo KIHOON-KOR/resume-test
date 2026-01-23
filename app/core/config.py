@@ -2,12 +2,12 @@ from pydantic_settings import BaseSettings
 
 
 class Settings(BaseSettings):
-    EMAIL_PROVIDER: str = "gmail"
+    EMAIL_PROVIDER: str = "naver"
 
     EMAIL_USER: str
     EMAIL_PASS: str
 
-    CONTACT_EMAIL: str = "nike000112@gmail.com"
+    CONTACT_EMAIL: str = "nike000112@naver.com"
 
     EMAIL_HOST: str = ""
     EMAIL_PORT: int = 587
