@@ -1,186 +1,200 @@
-/* ====== 전체 레이아웃 ====== */
+/* ====== 1. 기본 설정 및 배경 애니메이션 ====== */
 body {
-  background: linear-gradient(180deg, #e8f5e9 0%, #dcedc8 100%); /* 은은한 배경 그라데이션 */
-  font-family: "Segoe UI", "Pretendard", sans-serif;
-  display: flex;
-  min-height: 100vh;
-  color: #1b5e20;
+    font-family: "Pretendard", -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    overflow: hidden; /* 전체 화면 고정 (내부 스크롤 사용) */
+    color: #ffffff;
+    background-color: #0f0c29;
 }
 
-/* ====== 사이드바 ====== */
-.sidebar {
-  width: 240px;
-  background: linear-gradient(180deg, #1b5e20 0%, #004d40 100%);
-  color: white;
-  padding: 40px 20px;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  border-top-right-radius: 20px;
-  border-bottom-right-radius: 20px;
-  box-shadow: 4px 0 15px rgba(0, 0, 0, 0.2);
-  position: sticky;
-  top: 0;
-  height: 100vh;
+/* 움직이는 배경 그라데이션 */
+.bg-gradient-animate {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: linear-gradient(-45deg, #0f0c29, #302b63, #24243e, #4a00e0);
+    background-size: 400% 400%;
+    animation: gradientBG 15s ease infinite;
+    z-index: -1;
 }
 
-.sidebar h2 {
-  margin-bottom: 30px;
-  font-weight: 700;
-  font-size: 1.8rem;
-  color: #a5d6a7;
-  letter-spacing: 1px;
+@keyframes gradientBG {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
 }
 
-/* 네비게이션 */
-.nav-link {
-  display: block;
-  color: #c8e6c9 !important;
-  margin: 8px 0;
-  transition: all 0.3s ease;
-  border-radius: 8px;
-  padding: 10px;
-  font-weight: 500;
-  text-decoration: none;
+/* ====== 2. 유리 패널 (Glassmorphism) ====== */
+.glass-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    padding: 20px;
+    padding-bottom: 80px; /* 독 공간 확보 */
+    box-sizing: border-box;
 }
 
-.nav-link:hover {
-  background-color: rgba(255, 255, 255, 0.1);
-  color: #ffffff !important;
-  transform: translateX(4px);
+.glass-container {
+    width: 100%;
+    max-width: 1200px;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 24px;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    padding: 40px;
+    overflow-y: auto; /* 컨텐츠가 넘치면 스크롤 */
+    
+    /* 스크롤바 숨기기 (깔끔하게) */
+    scrollbar-width: none; 
+}
+.glass-container::-webkit-scrollbar { display: none; }
+
+/* ====== 3. 하단 플로팅 독 (Navigation) ====== */
+.floating-dock {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 50px;
+    padding: 10px 20px;
+    display: flex;
+    gap: 15px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    z-index: 100;
 }
 
-/* ====== 본문 ====== */
-.content {
-  flex: 1;
-  padding: 60px 70px;
+.dock-item {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 1.5rem;
+    padding: 10px 15px;
+    border-radius: 50%;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-/* ====== Hero 영역 ====== */
-.hero {
-  background: linear-gradient(145deg, #004d40, #1b5e20);
-  color: #f1f8e9;
-  padding: 70px 30px;
-  text-align: center;
-  border-radius: 20px;
-  box-shadow: 0 10px 30px rgba(0, 77, 64, 0.35);
-  margin-bottom: 60px;
-  transition: all 0.4s ease;
+.dock-item:hover {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-5px) scale(1.1);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
 }
 
-.hero:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 14px 35px rgba(0, 77, 64, 0.45);
+/* ====== 4. Bento Grid (Home Layout) ====== */
+.bento-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(2, minmax(200px, auto));
+    gap: 20px;
+    height: 100%;
 }
 
-.hero h1 {
-  font-size: 3.2rem;
-  font-weight: 800;
-  margin-bottom: 10px;
+.bento-box {
+    background: rgba(255, 255, 255, 0.07);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 20px;
+    padding: 30px;
+    transition: transform 0.3s ease, background 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
 }
 
-.roles {
-  font-size: 1.25rem;
-  color: #dcedc8;
+.bento-box:hover {
+    background: rgba(255, 255, 255, 0.12);
+    transform: translateY(-5px);
 }
 
-/* ====== 섹션 타이틀 ====== */
-section h2 {
-  text-align: center;
-  color: #1b5e20;
-  margin-bottom: 40px;
-  font-size: 2rem;
-  font-weight: 700;
+/* 그리드 배치 (Span 설정) */
+.box-intro { grid-column: span 2; grid-row: span 1; }
+.box-profile { grid-column: span 1; grid-row: span 1; text-align: center;}
+.box-social { grid-column: span 1; grid-row: span 1; }
+.box-project { grid-column: span 3; grid-row: span 1; }
+.box-contact { grid-column: span 1; grid-row: span 1; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;}
+
+/* 텍스트 스타일 */
+h1, h2, h3, h4 { margin-top: 0; font-weight: 700; }
+.text-highlight { color: #a6c1ee; }
+.text-dim { color: rgba(255,255,255,0.6); font-size: 0.9rem; }
+
+/* 프로필 이미지 */
+.bento-profile-img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid rgba(255,255,255,0.3);
+    margin-bottom: 15px;
 }
 
-/* ====== 프로젝트 카드 ====== */
-.card {
-  background-color: #f9fff9;
-  border-radius: 16px;
-  box-shadow: 0 4px 20px rgba(27, 94, 32, 0.15);
-  overflow: hidden;
-  transition: all 0.3s ease;
-  border: 1px solid #c8e6c9;
+/* 프로젝트 뱃지 */
+.tech-badge {
+    background: rgba(0,0,0,0.3);
+    padding: 5px 10px;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    margin-right: 5px;
+    color: #a6c1ee;
 }
 
-.card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 10px 25px rgba(27, 94, 32, 0.25);
+/* 반응형 (모바일) */
+@media (max-width: 992px) {
+    .bento-grid {
+        display: flex;
+        flex-direction: column;
+        height: auto;
+    }
+    .glass-wrapper {
+        height: auto;
+        padding-bottom: 100px; /* 모바일 하단 독 공간 */
+        overflow-y: scroll;
+    }
+    body { overflow: auto; }
 }
 
-.card-img-top {
-  width: 100%;
-  height: 280px;
-  object-fit: cover;
+/* ====== Contact 페이지 입력폼 스타일 수정 ====== */
+
+/* 1. 입력창 기본 스타일 (반투명 어두운 배경) */
+.form-control {
+    background-color: rgba(0, 0, 0, 0.3) !important; /* 뒤가 비치는 어두운 색 */
+    border: 1px solid rgba(255, 255, 255, 0.15) !important; /* 얇은 흰색 테두리 */
+    color: #ffffff !important; /* 입력 글자색: 흰색 */
+    border-radius: 12px; /* 부드러운 모서리 */
+    backdrop-filter: blur(5px); /* 유리 블러 효과 */
+    transition: all 0.3s ease;
 }
 
-.card-body {
-  padding: 20px;
-  text-align: center;
+/* 2. 입력창 클릭(포커스) 했을 때 효과 */
+.form-control:focus {
+    background-color: rgba(0, 0, 0, 0.5) !important; /* 배경이 살짝 더 진해짐 */
+    border-color: #a6c1ee !important; /* 테두리가 포인트 컬러(연한 하늘색)로 변경 */
+    box-shadow: 0 0 15px rgba(166, 193, 238, 0.2) !important; /* 은은하게 빛나는 효과 */
+    color: #ffffff !important;
 }
 
-/* ====== 버튼 ====== */
-button,
-input[type="submit"],
-.btn {
-  background: linear-gradient(135deg, #00796b, #004d40);
-  color: #ffffff;
-  border: none;
-  border-radius: 10px;
-  padding: 12px 28px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 6px 15px rgba(0, 77, 64, 0.4);
+/* 3. 플레이스홀더 (입력 전 안내 문구) 색상 */
+.form-control::placeholder {
+    color: rgba(255, 255, 255, 0.5) !important; /* 흐린 회색 */
+    font-size: 0.95rem;
 }
 
-button:hover,
-input[type="submit"]:hover,
-.btn:hover {
-  background: linear-gradient(135deg, #00695c, #003d33);
-  box-shadow: 0 8px 20px rgba(0, 77, 64, 0.5);
-  transform: translateY(-2px);
-}
-
-button:active,
-input[type="submit"]:active,
-.btn:active {
-  transform: scale(0.97);
-}
-
-/* ====== 입력창 ====== */
-textarea,
-input[type="text"],
-input[type="email"],
-input[type="password"] {
-  background-color: #f1f8f6;
-  border: 1.5px solid #a5d6a7;
-  border-radius: 8px;
-  padding: 10px;
-  width: 100%;
-  font-size: 1rem;
-  transition: all 0.25s ease;
-  color: #1b5e20;
-}
-
-textarea:focus,
-input:focus {
-  outline: none;
-  border-color: #66bb6a;
-  box-shadow: 0 0 6px rgba(102, 187, 106, 0.4);
-}
-
-/* ====== 스크롤바 ====== */
-::-webkit-scrollbar {
-  width: 8px;
-}
-
-::-webkit-scrollbar-thumb {
-  background-color: #2e7d32;
-  border-radius: 10px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background-color: #1b5e20;
+/* 4. 자동완성 시 배경이 하얗게 변하는 것 방지 (크롬 등 브라우저 기본 동작 덮어쓰기) */
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active{
+    -webkit-box-shadow: 0 0 0 30px rgba(30, 30, 40, 0.8) inset !important; /* 내부 그림자로 색상 덮기 */
+    -webkit-text-fill-color: white !important; /* 글자색 흰색 유지 */
+    transition: background-color 5000s ease-in-out 0s;
 }

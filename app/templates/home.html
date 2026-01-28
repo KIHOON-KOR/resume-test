@@ -1,38 +1,80 @@
 {% extends "base.html" %}
 {% block title %}Home - KiHoon{% endblock %}
 {% block content %}
-  <section class="hero">
-    <h1>Hello, I am KiHoon</h1>
-    <p class="roles">
-      Backend Developer / Python Developer
-    </p>
-  </section>
 
-  <div class="container mt-5 text-center">
-    <h3>Projects Portfolio</h3>
-    <div id="projectsCarousel" class="carousel slide mt-4" data-bs-ride="carousel">
-      <div class="carousel-inner">
-        {% for project in projects if project.main %}
-        <div class="carousel-item {% if loop.first %}active{% endif %}">
-          <div class="card shadow-lg mx-auto" style="max-width:700px;">
-            <img src="{{ project.image }}" class="card-img-top" alt="{{ project.title }}">
-            <div class="card-body text-center">
-              <h4 class="card-title">{{ project.title }}</h4>
-              <p class="card-text text-muted">{{ project.desc }}</p>
-            </div>
-          </div>
-        </div>
-        {% endfor %}
+<div class="bento-grid">
+  
+  <div class="bento-box box-intro">
+    <div class="d-flex flex-column justify-content-center h-100">
+      <h4 class="text-highlight mb-3">Backend Developer</h4>
+      <h1 class="display-5 mb-4">Hello,<br>I am KiHoon.</h1>
+      <p class="text-white-50 fs-5">
+        안정적이고 확장 가능한 서버 아키텍처를 설계하는<br>
+        백엔드 개발자 김기훈입니다.
+      </p>
+      <div class="mt-3">
+        <span class="tech-badge">Python</span>
+        <span class="tech-badge">Django</span>
+        <span class="tech-badge">FastAPI</span>
+        <span class="tech-badge">AWS</span>
       </div>
-      <button class="carousel-control-prev" type="button" data-bs-target="#projectsCarousel" data-bs-slide="prev">
-        <span class="carousel-control-prev-icon"></span>
-      </button>
-      <button class="carousel-control-next" type="button" data-bs-target="#projectsCarousel" data-bs-slide="next">
-        <span class="carousel-control-next-icon"></span>
-      </button>
-    </div>
-    <div class="mt-4">
-      <a href="/projects" class="btn btn-primary">More Projects</a>
     </div>
   </div>
+
+  <div class="bento-box box-profile align-items-center">
+    <img src="/static/images/IMG_4400.jpeg" alt="Profile" class="bento-profile-img shadow-lg">
+    <h3>KiHoon</h3>
+    <p class="text-dim mb-0">Incheon, Korea</p>
+  </div>
+
+  <div class="bento-box box-social justify-content-center align-items-center">
+    <h4 class="mb-4">Links</h4>
+    <div class="d-grid gap-3 w-100">
+      <a href="https://github.com/KIHOON-KOR" target="_blank" class="btn btn-outline-light text-start">
+        <i class="bi bi-github me-2"></i> GitHub
+      </a>
+      <a href="https://velog.io/@nike6736/posts" target="_blank" class="btn btn-outline-light text-start">
+        <i class="bi bi-pencil-square me-2"></i> Velog
+      </a>
+    </div>
+  </div>
+
+  <div class="bento-box box-project">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h3>Featured Project</h3>
+        <a href="/projects" class="btn btn-sm btn-outline-light rounded-pill">View All <i class="bi bi-arrow-right"></i></a>
+    </div>
+    
+    {% if projects %}
+      {% set main_p = projects[0] %}
+      <div class="row g-0 h-100 align-items-center">
+        <div class="col-md-5">
+            <img src="{{ main_p.image }}" class="img-fluid rounded-3 shadow-sm" style="object-fit: cover; height: 200px; width: 100%;" alt="Project">
+        </div>
+        <div class="col-md-7 ps-md-4 mt-3 mt-md-0">
+            <h4 class="mb-2">{{ main_p.title }}</h4>
+            <p class="text-white-50 text-truncate" style="max-height: 3em;">{{ main_p.desc }}</p>
+            <div class="mt-2">
+                {% if main_p.tech %}
+                    {% for t in main_p.tech[:3] %}
+                    <small class="tech-badge border border-secondary text-light">{{ t }}</small>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+      </div>
+    {% else %}
+      <p class="text-center text-dim">등록된 프로젝트가 없습니다.</p>
+    {% endif %}
+  </div>
+
+  <a href="/contact" class="bento-box box-contact text-decoration-none justify-content-center align-items-center text-center">
+    <div>
+        <i class="bi bi-send-fill fs-1 mb-3 d-block"></i>
+        <h3>Let's Talk</h3>
+        <p class="mb-0 opacity-75">함께 프로젝트를 시작해보세요</p>
+    </div>
+  </a>
+
+</div>
 {% endblock %}

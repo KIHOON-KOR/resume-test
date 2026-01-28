@@ -1,25 +1,33 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <title>{% block title %}KiHoon{% endblock %}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}KiHoon's Portfolio{% endblock %}</title>
+  
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
   <link rel="stylesheet" href="/static/css/style.css">
+  
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
 </head>
 <body>
-  <div class="sidebar">
-    <h2>KiHoon</h2>
-    <nav class="nav flex-column">
-      <a class="nav-link" href="/">홈</a>
-      <a class="nav-link" href="/projects">프로젝트</a>
-      <a class="nav-link" href="/about">소개</a>
-      <a class="nav-link" href="/contact">연락처</a>
-    </nav>
-  </div>
-  <div class="content">
-    {% block content %}{% endblock %}
-  </div>
+
+  <div class="bg-gradient-animate"></div>
+
+  <main class="glass-wrapper">
+    <div class="glass-container">
+       {% block content %}{% endblock %}
+    </div>
+  </main>
+
+  <nav class="floating-dock">
+    <a href="/" class="dock-item" title="Home"><i class="bi bi-grid-fill"></i></a>
+    <a href="/projects" class="dock-item" title="Projects"><i class="bi bi-code-slash"></i></a>
+    <a href="/about" class="dock-item" title="About"><i class="bi bi-person-badge"></i></a>
+    <a href="/contact" class="dock-item" title="Contact"><i class="bi bi-envelope-paper-fill"></i></a>
+  </nav>
+
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
