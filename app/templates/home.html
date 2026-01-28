@@ -1,79 +1,96 @@
 {% extends "base.html" %}
 {% block title %}Home - KiHoon{% endblock %}
-{% block content %}
 
+{% block content %}
 <div class="bento-grid">
   
   <div class="bento-box box-intro">
     <div class="d-flex flex-column justify-content-center h-100">
       <h4 class="text-highlight mb-3">Backend Developer</h4>
-      <h1 class="display-5 mb-4">Hello,<br>I am KiHoon.</h1>
-      <p class="text-white-50 fs-5">
+      <h1 class="display-5 mb-4 fw-bold">Hello,<br>I am KiHoon.</h1>
+      <p class="text-white-50 fs-5 mb-4" style="line-height: 1.6;">
         안정적이고 확장 가능한 서버 아키텍처를 설계하는<br>
         백엔드 개발자 김기훈입니다.
       </p>
-      <div class="mt-3">
-        <span class="tech-badge">Python</span>
-        <span class="tech-badge">Django</span>
-        <span class="tech-badge">FastAPI</span>
-        <span class="tech-badge">AWS</span>
+      <div class="d-flex flex-wrap gap-2">
+        <span class="badge bg-light text-dark bg-opacity-75 rounded-pill px-3 py-2">Python</span>
+        <span class="badge bg-light text-dark bg-opacity-75 rounded-pill px-3 py-2">Django</span>
+        <span class="badge bg-light text-dark bg-opacity-75 rounded-pill px-3 py-2">FastAPI</span>
+        <span class="badge bg-light text-dark bg-opacity-75 rounded-pill px-3 py-2">AWS</span>
       </div>
     </div>
   </div>
 
-  <div class="bento-box box-profile align-items-center">
-    <img src="/static/images/IMG_4400.jpeg" alt="Profile" class="bento-profile-img shadow-lg">
-    <h3>KiHoon</h3>
-    <p class="text-dim mb-0">Incheon, Korea</p>
+  <div class="bento-box box-profile d-flex flex-column align-items-center justify-content-center h-100">
+    <div class="mb-3 position-relative">
+        <div class="rounded-circle overflow-hidden shadow-lg" style="width: 100px; height: 100px; border: 3px solid rgba(255,255,255,0.2);">
+            <img src="/static/images/IMG_4400.jpeg" alt="Profile" class="w-100 h-100" style="object-fit: cover;">
+        </div>
+    </div>
+    <h3 class="fw-bold mb-1">KiHoon</h3>
+    <p class="text-white-50 fs-6 m-0">Incheon, Korea</p>
   </div>
 
-  <div class="bento-box box-social justify-content-center align-items-center">
-    <h4 class="mb-4">Links</h4>
-    <div class="d-grid gap-3 w-100">
-      <a href="https://github.com/KIHOON-KOR" target="_blank" class="btn btn-outline-light text-start">
-        <i class="bi bi-github me-2"></i> GitHub
-      </a>
-      <a href="https://velog.io/@nike6736/posts" target="_blank" class="btn btn-outline-light text-start">
-        <i class="bi bi-pencil-square me-2"></i> Velog
-      </a>
+  <div class="d-flex flex-column gap-3" style="grid-column: span 1; grid-row: span 1;">
+    
+    <div class="bento-box box-social flex-fill d-flex flex-column justify-content-center align-items-center p-3">
+      <h5 class="text-white-50 mb-3 align-self-start ps-2">Links</h5>
+      <div class="d-grid gap-2 w-100">
+        <a href="https://github.com/KIHOON-KOR" target="_blank" class="btn btn-outline-light text-start">
+          <i class="bi bi-github me-2"></i> GitHub
+        </a>
+        <a href="https://velog.io/@nike6736/posts" target="_blank" class="btn btn-outline-light text-start">
+          <i class="bi bi-pencil-square me-2"></i> Velog
+        </a>
+      </div>
     </div>
+
+    <a href="https://solved.ac/profile/nike000112" target="_blank" class="bento-box flex-fill d-flex align-items-center justify-content-center p-0 overflow-hidden position-relative text-decoration-none">
+        <img src="https://mazassumnida.wtf/api/v2/generate_badge?boj=nike000112" 
+             alt="Baekjoon Tier" 
+             class="img-fluid w-100 h-100"
+             style="object-fit: contain; transform: scale(0.9);">
+    </a>
   </div>
 
   <div class="bento-box box-project">
     <div class="d-flex justify-content-between align-items-center mb-3">
-        <h3>Featured Project</h3>
-        <a href="/projects" class="btn btn-sm btn-outline-light rounded-pill">View All <i class="bi bi-arrow-right"></i></a>
+        <h3 class="mb-0 fw-bold">Featured Project</h3>
+        <a href="/projects" class="btn btn-sm btn-outline-light rounded-pill px-3">View All <i class="bi bi-arrow-right ms-1"></i></a>
     </div>
     
     {% if projects %}
       {% set main_p = projects[0] %}
       <div class="row g-0 h-100 align-items-center">
-        <div class="col-md-5">
-            <img src="{{ main_p.image }}" class="img-fluid rounded-3 shadow-sm" style="object-fit: cover; height: 200px; width: 100%;" alt="Project">
+        <div class="col-md-5 mb-3 mb-md-0 h-100">
+            <div class="rounded-4 overflow-hidden shadow-sm h-100 position-relative">
+               <img src="{{ main_p.image }}" class="w-100 h-100 position-absolute" style="object-fit: cover; top:0; left:0;" alt="Project">
+            </div>
         </div>
-        <div class="col-md-7 ps-md-4 mt-3 mt-md-0">
-            <h4 class="mb-2">{{ main_p.title }}</h4>
-            <p class="text-white-50 text-truncate" style="max-height: 3em;">{{ main_p.desc }}</p>
-            <div class="mt-2">
-                {% if main_p.tech %}
-                    {% for t in main_p.tech[:3] %}
-                    <small class="tech-badge border border-secondary text-light">{{ t }}</small>
-                    {% endfor %}
-                {% endif %}
+        <div class="col-md-7 ps-md-4">
+            <h2 class="fw-bold mb-2">{{ main_p.title }}</h2>
+            <p class="text-white-50 text-truncate" style="-webkit-line-clamp: 2; display: -webkit-box; -webkit-box-orient: vertical; overflow: hidden;">
+              {{ main_p.desc }}
+            </p>
+            <div class="mt-3">
+                 <span class="badge bg-white text-dark bg-opacity-75 me-1">Django</span>
+                 <span class="badge bg-white text-dark bg-opacity-75">AWS</span>
             </div>
         </div>
       </div>
     {% else %}
-      <p class="text-center text-dim">등록된 프로젝트가 없습니다.</p>
+        <div class="h-75 d-flex align-items-center justify-content-center text-white-50">
+            <p>프로젝트를 등록해주세요.</p>
+        </div>
     {% endif %}
   </div>
 
-  <a href="/contact" class="bento-box box-contact text-decoration-none justify-content-center align-items-center text-center">
-    <div>
-        <i class="bi bi-send-fill fs-1 mb-3 d-block"></i>
-        <h3>Let's Talk</h3>
-        <p class="mb-0 opacity-75">함께 프로젝트를 시작해보세요</p>
+  <a href="/contact" class="bento-box box-contact text-decoration-none d-flex flex-column justify-content-center align-items-center text-center" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+    <div class="mb-3 p-3 rounded-circle" style="background: rgba(255,255,255,0.2);">
+        <i class="bi bi-send-fill fs-2 text-white"></i>
     </div>
+    <h3 class="text-white fw-bold">Let's Talk</h3>
+    <p class="text-white-50 m-0 fs-6">프로젝트 제안하기</p>
   </a>
 
 </div>
