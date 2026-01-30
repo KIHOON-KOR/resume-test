@@ -1,7 +1,7 @@
 [
   {
     "title": "OZ_LMS QnA",
-    "desc": "웹 서비스 백엔드 개발 · QnA question, Admin Category ",
+    "desc": "QnA question | Admin Category",
     "image": "/static/images/qna.png",
     "main": true,
     "mini1" : "/static/images/qna_1.png",
@@ -9,13 +9,13 @@
     "mini3" : "/static/images/qna_3.png"
   },
   {
-    "title": "Focuz",
-    "desc": "모바일 앱 백엔드 개발 · 수면 인지 테스트 모듈 담당",
-    "image": "static/images/project2.png",
+    "title": "PlayType",
+    "desc": "AI Summary/Tendency | Preference | Review/comment ",
+    "image": "static/images/playtype.png",
     "main": true,
-    "mini1" : "/static/images/project2-1.png",
-    "mini2" : "/static/images/project2-2.png",
-    "mini3" : "/static/images/project2-3.png"
+    "mini1" : "/static/images/playtype1.png",
+    "mini2" : "/static/images/playtype2.png",
+    "mini3" : "/static/images/playtype3.png"
   },
   {
     "title": "CJcus",
