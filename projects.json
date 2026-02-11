@@ -11,16 +11,16 @@
   {
     "title": "PlayType",
     "desc": "AI Summary/Tendency | Preference | Review/comment ",
-    "image": "static/images/playtype.png",
+    "image": "static/images/playtype0.png",
     "main": true,
-    "mini1" : "/static/images/playtype1.png",
-    "mini2" : "/static/images/playtype2.png",
-    "mini3" : "/static/images/playtype3.png"
+    "mini1" : "/static/images/playtype_4.gif",
+    "mini2" : "/static/images/playtype_2.gif",
+    "mini3" : "/static/images/playtype_3.gif"        
   },
   {
-    "title": "CJcus",
-    "desc": "윈도우 프로그램 개발 · 메일 전송 및 거래명세서 기능 전담",
-    "image": "static/images/project3.jpg",
+    "title": "individual project",
+    "desc": "individual description",
+    "image": "static/images/indi_0.png",
     "main": true,
     "mini1" : "/static/images/project3-1.png",
     "mini2" : "/static/images/project3-2.png",
