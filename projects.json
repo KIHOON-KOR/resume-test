@@ -18,8 +18,8 @@
     "mini3" : "/static/images/playtype_3.gif"        
   },
   {
-    "title": "individual project",
-    "desc": "individual description",
+    "title": "Coding_Garden",
+    "desc": "Blog",
     "image": "static/images/indi_0.png",
     "main": true,
     "mini1" : "/static/images/project3-1.png",
