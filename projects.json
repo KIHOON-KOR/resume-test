@@ -19,11 +19,11 @@
   },
   {
     "title": "Coding_Garden",
-    "desc": "Blog",
+    "desc": "AI stylistic converter | Grade | Blog",
     "image": "static/images/indi_0.png",
     "main": true,
-    "mini1" : "/static/images/project3-1.png",
-    "mini2" : "/static/images/project3-2.png",
-    "mini3" : "/static/images/project3-3.png"
+    "mini1" : "/static/images/project3-1.gif",
+    "mini2" : "/static/images/project3-2.gif",
+    "mini3" : "/static/images/project3-3.gif"
   }
 ]
