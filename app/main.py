@@ -3,7 +3,7 @@ import pathlib
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 
-from app.routers import about, contact, home, projects
+from app.routers import about, contact, home, projects, tech
 
 app = FastAPI()
 BASE_DIR = pathlib.Path(__file__).resolve().parent
@@ -16,3 +16,4 @@ app.include_router(home.router)
 app.include_router(projects.router)
 app.include_router(about.router)
 app.include_router(contact.router)
+app.include_router(tech.router)

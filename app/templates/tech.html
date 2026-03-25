@@ -1,0 +1,259 @@
+{% extends "base.html" %}
+
+{% block title %}Tech Log - KiHoon{% endblock %}
+
+{% block content %}
+<style>
+    .glass-card {
+        background: rgba(0, 0, 0, 0.25);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 20px;
+        backdrop-filter: blur(10px);
+        padding: 2rem;
+        margin-bottom: 2rem;
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        color: white;
+        transition: transform 0.3s ease, border-color 0.3s ease;
+    }
+    .glass-card:hover {
+        transform: translateY(-5px);
+        border-color: rgba(166, 193, 238, 0.5);
+    }
+    .tech-badge {
+        background: rgba(166, 193, 238, 0.2);
+        color: #a6c1ee;
+        border: 1px solid rgba(166, 193, 238, 0.5);
+        font-weight: 500;
+        padding: 0.4em 0.8em;
+    }
+    .tech-badge-playtype {
+        background: rgba(187, 134, 252, 0.2);
+        color: #bb86fc;
+        border: 1px solid rgba(187, 134, 252, 0.5);
+        font-weight: 500;
+        padding: 0.4em 0.8em;
+    }
+    .section-title {
+        color: #a6c1ee;
+        font-size: 1.1rem;
+        font-weight: 600;
+        margin-top: 1.5rem;
+        margin-bottom: 0.5rem;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    .section-content {
+        color: rgba(255, 255, 255, 0.8);
+        line-height: 1.7;
+        padding-left: 1.5rem;
+        border-left: 2px solid rgba(255, 255, 255, 0.1);
+    }
+    /* 프로젝트 탭 버튼 트랜지션 */
+    .btn-project-tab {
+        transition: all 0.3s ease;
+        border-width: 2px;
+    }
+</style>
+
+<div class="container py-4">
+    <div class="text-center mb-5">
+        <h2 class="fw-bold text-white mb-2">Tech Log & Troubleshooting</h2>
+        <p class="text-white-50">어떤 고민을 거쳐 기술을 선택하고 문제를 해결했는지 기록합니다.</p>
+    </div>
+
+    <div class="d-flex justify-content-center flex-wrap gap-3 mb-5">
+        <button id="btn-garden" class="btn btn-primary btn-project-tab rounded-pill px-4 fw-bold" onclick="toggleProject('garden')">
+            🌱 Coding Garden
+        </button>
+        <button id="btn-playtype" class="btn btn-outline-light btn-project-tab rounded-pill px-4 fw-bold" onclick="toggleProject('playtype')">
+            🎮 PlayType
+        </button>
+    </div>
+
+    <div id="log-garden">
+        <div class="glass-card">
+            <div class="d-flex justify-content-between align-items-start mb-3 flex-wrap gap-2">
+                <h3 class="fw-bold m-0">대규모 쿼리 최적화와 DB 위임 설계</h3>
+                <span class="badge tech-badge rounded-pill">Coding Garden</span>
+            </div>
+            <div class="section-title"><i class="bi bi-exclamation-triangle-fill text-warning"></i> 상황 (Situation)</div>
+            <div class="section-content">
+                Django-Silk로 API 성능을 프로파일링한 결과, 게시글 및 휴지통 목록 조회 시 시리얼라이저(Serializer)의 지연 평가로 인해 참조 데이터(시리즈, 태그 등)를 매번 조회하며 최대 21번의 N+1 쿼리가 폭주하는 것을 발견했습니다.
+            </div>
+            <div class="section-title"><i class="bi bi-question-circle-fill text-info"></i> 선택과 이유 (Why)</div>
+            <div class="section-content">
+                파이썬 메모리에서 딕셔너리로 캐싱하여 쿼리를 줄이는 방법도 고려했으나, 트래픽 증가 시 애플리케이션 서버의 메모리 부하가 심해질 것이라 판단했습니다. 따라서 데이터의 조인과 집계 연산에 최적화된 <strong>데이터베이스 엔진 자체의 기능</strong>을 활용해 아키텍처를 통일하기로 결정했습니다.
+            </div>
+            <div class="section-title"><i class="bi bi-check-circle-fill text-success"></i> 해결 및 결과 (How)</div>
+            <div class="section-content">
+                <code>select_related</code>와 <code>prefetch_related</code>를 적용해 정방향/역방향 참조 데이터를 병합했습니다. 또한 작성자 총 게시글 수 및 좋아요 여부 로직을 <code>Subquery</code>와 <code>Exists</code>를 도입해 단 한 번의 메인 쿼리 연산으로 이관했습니다. 결과적으로 API 당 쿼리 발생 횟수를 <strong>81%(21개 → 4개) 감소</strong>시키고, 응답 속도를 <strong>45%(31ms → 17ms) 단축</strong>했습니다.
+            </div>
+        </div>
+
+        <div class="glass-card">
+            <div class="d-flex justify-content-between align-items-start mb-3 flex-wrap gap-2">
+                <h3 class="fw-bold m-0">동시성 제어 및 데이터 무결성 보장</h3>
+                <span class="badge tech-badge rounded-pill">Coding Garden</span>
+            </div>
+            <div class="section-title"><i class="bi bi-exclamation-triangle-fill text-warning"></i> 상황 (Situation)</div>
+            <div class="section-content">
+                사용자가 '좋아요' 버튼이나 '새 시리즈 생성'을 짧은 순간에 여러 번 클릭할 경우, 중복 데이터가 생성되는 동시성 이슈(Race Condition)가 발생할 위험이 있었습니다.
+            </div>
+            <div class="section-title"><i class="bi bi-question-circle-fill text-info"></i> 선택과 이유 (Why)</div>
+            <div class="section-content">
+                Python 단에서 <code>if exists()</code>로 먼저 존재 여부를 검사하는 것은 찰나의 동시 요청을 완벽히 막을 수 없었습니다. DB 락(Lock) 방식은 성능 저하 및 데드락 위험이 있어, 가장 오버헤드가 적고 확실한 <strong>DB 스키마 레벨의 제약조건(Constraint)</strong>을 활용하기로 했습니다.
+            </div>
+            <div class="section-title"><i class="bi bi-check-circle-fill text-success"></i> 해결 및 결과 (How)</div>
+            <div class="section-content">
+                DB 모델에 복합 고유 제약조건(<code>UniqueConstraint</code>)을 적용하여 원천 차단했습니다. 이후 <code>IntegrityError</code>를 애플리케이션 서비스 계층에서 안전하게 예외 처리(Catch)하는 <strong>EAFP 패턴</strong>을 적용하여, 동시성 이슈 발생 시에도 서버 다운 없이 안전하게 400번대 응답을 반환하는 견고한 시스템을 구축했습니다.
+            </div>
+        </div>
+
+        <div class="glass-card">
+            <div class="d-flex justify-content-between align-items-start mb-3 flex-wrap gap-2">
+                <h3 class="fw-bold m-0">프레임워크 의존도를 낮춘 객체지향적 View 설계</h3>
+                <span class="badge tech-badge rounded-pill">Coding Garden</span>
+            </div>
+            <div class="section-title"><i class="bi bi-exclamation-triangle-fill text-warning"></i> 상황 (Situation)</div>
+            <div class="section-content">
+                게시글 목록 조회, 내 글 조회, 임시글 조회 등 다양한 View 클래스에서 쿼리 파라미터 파싱 및 페이지네이션 처리를 위한 코드가 중복해서 발생했습니다.
+            </div>
+            <div class="section-title"><i class="bi bi-question-circle-fill text-info"></i> 선택과 이유 (Why)</div>
+            <div class="section-content">
+                DRF 내장 <code>GenericAPIView</code>나 서드파티 라이브러리를 사용하면 코드를 쉽게 줄일 수 있었지만, 프레임워크의 '마법'에만 의존하기보다 프로젝트 요구사항에 맞는 공통 로직을 <strong>직접 객체지향적으로 추상화</strong>하여 향후 커스텀 로직 추가 시의 유연성을 확보하고자 했습니다.
+            </div>
+            <div class="section-title"><i class="bi bi-check-circle-fill text-success"></i> 해결 및 결과 (How)</div>
+            <div class="section-content">
+                중복되는 로직을 분리하여 커스텀 <code>PostListMixin</code> 클래스를 직접 설계하고, 다중 상속을 통해 View에 적용했습니다. 비즈니스 로직은 Service Layer로 철저히 위임하여, View 계층은 오직 'HTTP 요청 검증과 응답'이라는 단일 책임 원칙(SRP)만 수행하도록 유지보수성을 극대화했습니다.
+            </div>
+        </div>
+
+        <div class="glass-card">
+            <div class="d-flex justify-content-between align-items-start mb-3 flex-wrap gap-2">
+                <h3 class="fw-bold m-0">한정된 리소스 환경에서의 인프라/외부 연동 안정화</h3>
+                <span class="badge tech-badge rounded-pill">Coding Garden</span>
+            </div>
+            <div class="section-title"><i class="bi bi-exclamation-triangle-fill text-warning"></i> 상황 (Situation)</div>
+            <div class="section-content">
+                초기 배포 환경인 AWS EC2(t3.small)에서 제한된 메모리(2GB)로 인해 도커 컨테이너 빌드 및 실행 중 OOM(Out of Memory) 현상이 발생했습니다. 또한 외부 API(소셜, AI) 서버 장애 시 사내 서버까지 마비될 위험이 존재했습니다.
+            </div>
+            <div class="section-title"><i class="bi bi-question-circle-fill text-info"></i> 선택과 이유 (Why)</div>
+            <div class="section-content">
+                서버 사양을 올려(Scale-up) 문제를 쉽게 해결할 수 있지만, 운영 초기 단계에서 고정 비용을 낭비하지 않고 <strong>한정된 인프라 자원의 한계를 소프트웨어적으로 극복해 보는 것</strong>이 백엔드 개발자로서 더 가치 있는 경험이라고 판단했습니다.
+            </div>
+            <div class="section-title"><i class="bi bi-check-circle-fill text-success"></i> 해결 및 결과 (How)</div>
+            <div class="section-content">
+                EC2 디스크 공간을 활용해 2GB의 <strong>Swap Memory</strong>를 할당하여 OOM 현상을 성공적으로 방어했습니다. 또한 외부 API 통신 시 반드시 명시적인 Timeout을 설정하고 <code>raise_for_status()</code>로 상태 코드를 검증하여, 외부 서버 장애가 우리 서버의 스레드 무한 대기(Hang) 현상으로 전파되는 것을 차단했습니다.
+            </div>
+        </div>
+    </div>
+
+
+    <div id="log-playtype" class="d-none">
+        <div class="glass-card">
+            <div class="d-flex justify-content-between align-items-start mb-3 flex-wrap gap-2">
+                <h3 class="fw-bold m-0">외부 AI API 지연 극복을 위한 비동기 아키텍처 도입</h3>
+                <span class="badge tech-badge-playtype rounded-pill">PlayType</span>
+            </div>
+            <div class="section-title"><i class="bi bi-exclamation-triangle-fill text-warning"></i> 상황 (Situation)</div>
+            <div class="section-content">
+                OpenAI API를 활용해 '사용자 성향 분석' 및 '리뷰 요약' 기능을 구현했으나, 외부 API 호출 시 평균 2~3초의 응답 지연이 발생했습니다. 이로 인해 Django의 메인 스레드가 블로킹(Blocking)되어 전체적인 서버 성능과 UX(사용자 경험)가 심각하게 저하되는 문제가 있었습니다.
+            </div>
+            <div class="section-title"><i class="bi bi-question-circle-fill text-info"></i> 선택과 이유 (Why)</div>
+            <div class="section-content">
+                단순히 타임아웃(Timeout)을 길게 설정하거나 동기적으로 기다리는 방식은 트래픽이 몰릴 경우 웹 서버의 연결(Connection) 풀을 고갈시킬 위험이 높았습니다. 따라서 무거운 AI 분석 작업과 일반적인 API 응답을 완전히 분리(Decoupling)하여, 사용자에게는 즉각적인 응답을 주고 서버 리소스는 효율적으로 관리할 수 있는 <strong>비동기 메시지 큐(Task Queue) 시스템</strong>을 도입하기로 결정했습니다.
+            </div>
+            <div class="section-title"><i class="bi bi-check-circle-fill text-success"></i> 해결 및 결과 (How)</div>
+            <div class="section-content">
+                <strong>Celery</strong>와 <strong>Redis</strong>를 도입하여 AI 분석 요청을 백그라운드 워커(Worker)로 위임하는 비동기(Asynchronous) 파이프라인을 구축했습니다. 클라이언트에게는 요청 접수(Non-blocking) 상태를 즉시 응답하고, 분석이 완료되면 결과를 갱신하는 구조로 개선하여 API 지연으로 인한 화면 멈춤 현상을 완전히 해결했습니다.
+            </div>
+        </div>
+
+        <div class="glass-card">
+            <div class="d-flex justify-content-between align-items-start mb-3 flex-wrap gap-2">
+                <h3 class="fw-bold m-0">고강도 트래픽 환경에서의 '좋아요' 동시성 제어</h3>
+                <span class="badge tech-badge-playtype rounded-pill">PlayType</span>
+            </div>
+            <div class="section-title"><i class="bi bi-exclamation-triangle-fill text-warning"></i> 상황 (Situation)</div>
+            <div class="section-content">
+                커뮤니티의 핵심인 '좋아요(User-Review 다대다 관계)' 기능에서 다수의 사용자가 동시에 요청을 보낼 경우, Race Condition(경쟁 상태)이 발생하여 좋아요 카운트가 누락되거나 중복 생성되는 데이터 정합성 오류가 발견되었습니다.
+            </div>
+            <div class="section-title"><i class="bi bi-question-circle-fill text-info"></i> 선택과 이유 (Why)</div>
+            <div class="section-content">
+                충돌 발생 시 재시도하는 낙관적 락(Optimistic Lock) 방식도 고려했으나, '좋아요' 기능의 특성상 짧은 시간에 트래픽이 집중될 확률이 높아 재시도 오버헤드가 클 것으로 판단했습니다. 따라서 DB 레벨에서 확실하게 트랜잭션을 직렬화하는 <strong>비관적 락(Pessimistic Lock)</strong>과 스키마 제약조건을 결합하는 가장 엄격한 방식을 선택했습니다.
+            </div>
+            <div class="section-title"><i class="bi bi-check-circle-fill text-success"></i> 해결 및 결과 (How)</div>
+            <div class="section-content">
+                Django ORM의 <code>select_for_update()</code>를 활용해 데이터 수정 시 해당 row에 Lock을 걸어 다른 트랜잭션의 접근을 대기시켰습니다. 동시에 DB 스키마에 <code>UniqueConstraint</code>를 설정하여 중복 생성을 원천 차단했습니다. 그 결과 고강도 동시성 테스트 환경에서도 데이터 무결성을 100% 유지하는 견고한 시스템을 완성했습니다.
+            </div>
+        </div>
+
+        <div class="glass-card">
+            <div class="d-flex justify-content-between align-items-start mb-3 flex-wrap gap-2">
+                <h3 class="fw-bold m-0">계층형 데이터(Game-Review-Comment)의 N+1 쿼리 최적화</h3>
+                <span class="badge tech-badge-playtype rounded-pill">PlayType</span>
+            </div>
+            <div class="section-title"><i class="bi bi-exclamation-triangle-fill text-warning"></i> 상황 (Situation)</div>
+            <div class="section-content">
+                게임 정보를 조회할 때 해당 게임에 달린 리뷰 목록, 그리고 각 리뷰에 달린 댓글 목록까지 한 번에 불러와야 하는 복잡한 계층형 구조에서 N+1 쿼리가 기하급수적으로 폭발하는 문제가 발생했습니다.
+            </div>
+            <div class="section-title"><i class="bi bi-question-circle-fill text-info"></i> 선택과 이유 (Why)</div>
+            <div class="section-content">
+                데이터를 지연 평가(Lazy Evaluation)로 필요할 때마다 가져오면 로직은 단순해지지만, DB와의 네트워크 I/O(Round-trip) 비용이 기하급수적으로 증가합니다. 백엔드의 핵심은 최소한의 쿼리로 필요한 데이터를 조립하는 것이라 판단하여, <strong>ORM의 즉시 로딩(Eager Loading) 기법</strong>을 최대한 활용해 DB 단에서 조인과 캐싱을 끝내기로 결정했습니다.
+            </div>
+            <div class="section-title"><i class="bi bi-check-circle-fill text-success"></i> 해결 및 결과 (How)</div>
+            <div class="section-content">
+                정방향 참조(ForeignKey) 데이터는 <code>select_related</code>를 통해 SQL의 JOIN으로 한 번에 가져왔습니다. 다대다(M:N) 관계나 역참조(Reverse Relation) 데이터인 리뷰와 댓글 목록은 <code>prefetch_related</code>를 사용해 IN 쿼리로 병합하여 파이썬 메모리에서 매핑하도록 최적화했습니다. 이를 통해 리스트 조회 시 발생하는 쿼리 수를 획기적으로 줄이고 응답 속도를 개선했습니다.
+            </div>
+        </div>
+
+        <div class="glass-card">
+            <div class="d-flex justify-content-between align-items-start mb-3 flex-wrap gap-2">
+                <h3 class="fw-bold m-0">백엔드 리드로서의 팀 생산성 및 DX(개발자 경험) 개선</h3>
+                <span class="badge tech-badge-playtype rounded-pill">PlayType</span>
+            </div>
+            <div class="section-title"><i class="bi bi-exclamation-triangle-fill text-warning"></i> 상황 (Situation)</div>
+            <div class="section-content">
+                팀원들 간의 로컬 OS 및 환경 차이로 인해 "제 컴퓨터에서는 되는데요?"라는 문제가 빈번히 발생했습니다. 또한 프론트엔드 팀과 노션(Notion)으로 수동 API 문서를 공유하다 보니, 스펙 변경 시 싱크가 맞지 않아 연동 장애가 잦았습니다.
+            </div>
+            <div class="section-title"><i class="bi bi-question-circle-fill text-info"></i> 선택과 이유 (Why)</div>
+            <div class="section-content">
+                훌륭한 아키텍처만큼이나 중요한 것이 '팀의 개발 속도와 안정성'이라고 판단했습니다. 휴먼 에러를 유발하는 수동 세팅과 문서화를 배제하고, <strong>모든 환경과 문서를 코드 기반으로 자동화(IaC)</strong>하기로 리드로서 결단했습니다.
+            </div>
+            <div class="section-title"><i class="bi bi-check-circle-fill text-success"></i> 해결 및 결과 (How)</div>
+            <div class="section-content">
+                <strong>Docker Compose</strong>를 도입해 Web, PostgreSQL, Redis, Celery Worker 컨테이너를 하나의 코드로 묶어, 명령어 한 줄(<code>docker-compose up</code>)로 완벽히 동일한 개발 환경을 구축할 수 있게 했습니다. 또한 <code>drf-spectacular</code>를 활용해 코드를 기반으로 <strong>Swagger(OpenAPI)</strong> 명세서가 자동 생성되도록 연동했습니다. 이를 통해 프론트엔드 팀은 항상 최신화된 실시간 API 문서를 보며 커뮤니케이션 비용과 시행착오를 대폭 줄였습니다.
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    function toggleProject(projectName) {
+        const btnGarden = document.getElementById('btn-garden');
+        const btnPlaytype = document.getElementById('btn-playtype');
+        const logGarden = document.getElementById('log-garden');
+        const logPlaytype = document.getElementById('log-playtype');
+
+        if (projectName === 'garden') {
+            // 버튼 스타일 변경
+            btnGarden.classList.replace('btn-outline-light', 'btn-primary');
+            btnPlaytype.classList.replace('btn-primary', 'btn-outline-light');
+
+            // 콘텐츠 전환 (서서히 나타나는 효과는 CSS 클래스 확장이 필요하지만 기본 d-none으로 처리)
+            logGarden.classList.remove('d-none');
+            logPlaytype.classList.add('d-none');
+        } else {
+            // 버튼 스타일 변경
+            btnPlaytype.classList.replace('btn-outline-light', 'btn-primary');
+            btnGarden.classList.replace('btn-primary', 'btn-outline-light');
+
+            // 콘텐츠 전환
+            logPlaytype.classList.remove('d-none');
+            logGarden.classList.add('d-none');
+        }
+    }
+</script>
+{% endblock %}

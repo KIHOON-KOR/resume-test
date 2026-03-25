@@ -1,0 +1,14 @@
+import pathlib
+from fastapi import APIRouter, Request
+from fastapi.responses import HTMLResponse
+from fastapi.templating import Jinja2Templates
+
+router = APIRouter()
+BASE_DIR = pathlib.Path(__file__).resolve().parent.parent
+templates = Jinja2Templates(directory=str(BASE_DIR / "templates"))
+
+@router.get("/tech", response_class=HTMLResponse)
+async def tech_log(request: Request):
+    return templates.TemplateResponse(
+        "tech.html", {"request": request}
+    )

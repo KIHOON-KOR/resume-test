@@ -151,7 +151,48 @@
 
   <section>
     <h4 class="text-white mb-4 ps-2 border-start border-4 border-warning">Key Projects Experience</h4>
-    
+
+<div class="glass-card">
+  <div class="d-flex justify-content-between align-items-start mb-3 flex-wrap gap-2">
+    <h3 class="fw-bold m-0">🌱 Coding Garden </h3>
+    <span class="badge bg-success bg-opacity-75">Personal Project</span>
+  </div>
+
+  <div class="korean">
+    <p class="text-white-60 mb-4">생성형 AI 어시스턴트 및 게이미피케이션이 접목된 블로그 플랫폼</p>
+    <div class="row">
+      <div class="col-md-12">
+        <h6 class="text-highlight">주요 기여 및 트러블슈팅</h6>
+        <ul class="custom-list mt-3">
+          <li>
+            <strong>대규모 쿼리 최적화:</strong> Django-Silk를 활용해 N+1 문제를 분석하고, Subquery와 Exists를 도입해 DB 단 연산으로 통일하여 쿼리 호출을 81%(21개->4개) 감소시켰습니다.
+          </li>
+          <li>
+            <strong>동시성 제어 및 무결성:</strong> 좋아요 동시 요청 시 발생하는 무결성 에러(IntegrityError)를 애플리케이션 단에서 안전하게 Catch하여 동시성 이슈를 방어했습니다.
+          </li>
+          <li>
+            <strong>아키텍처 설계:</strong> View와 Service Layer를 분리하고, PostListMixin 클래스를 직접 구현해 다중 상속을 적용하여 View 계층의 가독성을 대폭 향상시켰습니다.
+          </li>
+          <li>
+            <strong>인프라 & CI/CD:</strong> AWS EC2(t3.small) 환경에서 Swap Memory를 할당해 OOM을 방어하고, GitHub Actions 및 Docker Compose를 통한 무중단 CI/CD를 구축했습니다.
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="english d-none">
+    <p class="text-white-60 mb-4">AI-Assisted Blog Platform with Gamification Features</p>
+    <h6 class="text-highlight">Key Contributions & Troubleshooting</h6>
+    <ul class="custom-list mt-3">
+        <li><strong>Query Optimization:</strong> Reduced queries by 81% using Django-Silk, Subquery, and Exists.</li>
+        <li><strong>Concurrency Control:</strong> Handled IntegrityError to prevent race conditions during concurrent requests.</li>
+        <li><strong>Architecture:</strong> Separated View and Service Layers and implemented a custom PostListMixin for better readability.</li>
+        <li><strong>Infra & CI/CD:</strong> Prevented OOM with Swap Memory on AWS EC2 and built automated CI/CD using GitHub Actions and Docker.</li>
+    </ul>
+  </div>
+</div>
+
     <div class="glass-card">
       <div class="d-flex justify-content-between align-items-start mb-3 flex-wrap gap-2">
         <h3 class="fw-bold m-0">🎮 PlayType</h3>
