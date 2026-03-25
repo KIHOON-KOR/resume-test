@@ -113,9 +113,22 @@
           <div class="col-md-4">
             <div class="card mb-4 shadow-sm">
               <img src="{{ main_project.image }}" class="card-img-top" alt="{{ main_project.title }}">
-              <div class="card-body">
-                <h3 class="card-title">{{ main_project.title }}</h3>
-                <p class="card-text">{{ main_project["desc"] }}</p>
+              <div class="card-body p-4">
+                <h5 class="card-title fw-bold mb-3" style="font-size: 1.3rem; word-break: keep-all; letter-spacing: -0.5px;">
+                  {{ main_project.title }}
+                </h5>
+
+                <p class="card-text mb-4" style="font-size: 0.9rem; line-height: 1.6; color: rgba(255, 255, 255, 0.75);">
+                  {{ main_project["desc"] }}
+                </p>
+
+                <div class="d-flex flex-wrap gap-2">
+                  {% for tag in main_project.tags %}
+                    <span class="badge rounded-pill" style="background-color: rgba(166, 193, 238, 0.1); color: #a6c1ee; border: 1px solid rgba(166, 193, 238, 0.3); font-size: 0.8rem; font-weight: 500; padding: 0.5em 0.8em;">
+                      {{ tag }}
+                    </span>
+                  {% endfor %}
+                </div>
               </div>
             </div>
             <div class="connector-line"></div>
